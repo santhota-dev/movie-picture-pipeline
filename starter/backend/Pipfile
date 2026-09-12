@@ -9,6 +9,7 @@ flask-cors = "*"
 pytest = "*"
 
 [dev-packages]
+flake8 = "*"
 black = "*"
 coverage = "*"
 
