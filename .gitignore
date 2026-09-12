@@ -1,0 +1,23 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# AWS / credentials / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Python
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Node
+**/node_modules/
+**/build/
+
+# OS/editor
+.DS_Store
