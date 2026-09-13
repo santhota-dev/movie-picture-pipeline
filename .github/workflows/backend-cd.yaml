@@ -140,7 +140,31 @@ jobs:
 
           kustomize build | kubectl apply -f -
 
-          kubectl rollout status deployment/backend --timeout=300s
+          echo "===== NODES ====="
+          kubectl get nodes -o wide || true
 
-          kubectl get pods
+          echo "===== PODS BEFORE ROLLOUT ====="
+          kubectl get pods -o wide || true
+
+          if ! kubectl rollout status deployment/backend --timeout=300s; then
+            echo "===== PODS ====="
+            kubectl get pods -o wide || true
+
+            echo "===== DEPLOYMENT ====="
+            kubectl describe deployment backend || true
+
+            echo "===== POD DETAILS ====="
+            kubectl describe pods -l app=backend || true
+
+            echo "===== POD LOGS ====="
+            kubectl logs -l app=backend --all-containers --tail=100 || true
+
+            echo "===== EVENTS ====="
+            kubectl get events --sort-by=.lastTimestamp || true
+
+            exit 1
+          fi
+
+          echo "===== DEPLOYMENT SUCCESSFUL ====="
+          kubectl get pods -o wide
           kubectl get svc backend
